@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memo Studio - AI-Driven AEC Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="visualization-container">
+            <div class="studio-logo">Memo Studio</div>
+            <canvas id="parametricCanvas"></canvas>
+            <div class="location-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Brooklyn, NY
+            </div>
+            <div class="controls-panel">
+                <div class="panel-header">
+                    <h3>Tower Parameters</h3>
+                    <div class="view-controls">
+                        <button id="resetCamera" title="Reset Camera Position">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                            </svg>
+                        </button>
+                        <button id="toggleAutoRotate" title="Toggle Auto-Rotation">
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <div class="slider-container" title="Adjust the number of floors in the tower">
+                        <label for="numLevels">Number of Levels</label>
+                        <input type="range" id="numLevels" min="1" max="36" value="10">
+                        <span class="value-display">10</span>
+                    </div>
+
+                    <div class="slider-container" title="Select different floor height patterns">
+                        <label for="heightSeries">Height Pattern</label>
+                        <input type="range" id="heightSeries" min="1" max="20" value="1">
+                        <span class="value-display">Standard 10ft</span>
+                        <div id="heightSeriesLabel" class="pattern-name"></div>
+                    </div>
+
+                    <div class="slider-container" title="Change the floor plate area">
+                        <label for="floorArea">Floor Area</label>
+                        <input type="range" id="floorArea" min="1000" max="100000" value="5000" step="1000">
+                        <span class="value-display">5,000 sf</span>
+                    </div>
+                </div>
+
+                <div class="height-display">
+                    <div class="panel-header">
+                        <h4>Floor Heights</h4>
+                        <button id="exportData" title="Export floor heights to CSV">
+                            <svg viewBox="0 0 24 24" width="16" height="16">
+                                <path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="heightsList" class="custom-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="hero-content">
+                <h1 class="glitch" data-text="Automate Your Modular Design Process">Automate Your Modular Design Process</h1>
+                <p class="subheadline">Empower your architectural team with custom automation tools and expert guidance. Streamline AEC workflows, reduce repetitive tasks, and deliver exceptional results—every time.</p>
+                <button class="cta-button">Get a Free Consultation</button>
+            </div>
+
+            <section class="benefits">
+                <h2>Key Benefits</h2>
+                <div class="benefit-card">
+                    <h3>Accelerate Your Projects</h3>
+                    <p>Reduce manual labor by up to 80% with purpose-built automation solutions designed to integrate seamlessly into your existing processes.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Enhance Design Quality</h3>
+                    <p>Maintain consistent standards across large-scale residential, franchise, and hospitality projects. Cut errors, eliminate redundant work, and preserve design integrity from start to finish.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Innovate with AI</h3>
+                    <p>Leverage cutting-edge AI-driven technologies, parametric design, and BIM automation to stay ahead of the competition. Our consultancy and education services ensure your team always works with the latest industry tools.</p>
+                </div>
+            </section>
+
+            <section class="services">
+                <div class="service-card">
+                    <h3>Custom Automation Solutions</h3>
+                    <div class="service-details">
+                        <div>
+                            <h4>What We Do</h4>
+                            <p>We craft specialized automation tools tailored to your specific workflows, helping you standardize and expedite the design process.</p>
+                        </div>
+                        <div>
+                            <h4>Who It's For</h4>
+                            <p>Architects, developers, and contractors handling modular and large-scale building projects.</p>
+                        </div>
+                        <div>
+                            <h4>Why It Matters</h4>
+                            <p>Save time, reduce costs, and boost project quality—without compromising creativity or design excellence.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-card">
+                    <h3>AI & Automation Consulting</h3>
+                    <div class="service-details">
+                        <div>
+                            <h4>What We Do</h4>
+                            <p>We introduce your firm to state-of-the-art AI platforms, parametric modeling techniques, and BIM automation strategies.</p>
+                        </div>
+                        <div>
+                            <h4>Who It's For</h4>
+                            <p>Forward-thinking companies looking to enhance efficiency, collaboration, and competitive advantage in a rapidly evolving AEC landscape.</p>
+                        </div>
+                        <div>
+                            <h4>Why It Matters</h4>
+                            <p>Empower your team with the insights and skills they need to deliver cutting-edge projects faster, smarter, and more cost-effectively.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="about">
+                <h2>About Memo Studio</h2>
+                <p>At Memo Studio, we specialize in automating architectural design workflows for large-scale residential, franchise, and hospitality developments. Our custom modular automation tools and AI-driven consulting services enable architects, developers, and contractors to embrace BIM, parametric design, and other advanced technologies. By integrating the latest AI solutions, we help you accelerate project timelines, enhance design quality, and outperform the competition.</p>
+            </section>
+
+            <section class="final-cta">
+                <h2>Ready to Transform Your Workflow?</h2>
+                <p>Reach out today for a Free Consultation and discover how our tailored automation and AI solutions can elevate your next project.</p>
+                <button class="cta-button">Get a Free Consultation</button>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left"> 2024 Memo Studio | Experts in Modular Design Automation & AI-Driven AEC Solutions</div>
+            <div class="footer-right">
+                <span class="footer-location">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Brooklyn, NY
+                </span>
+                <span class="footer-contact">Contact: alireza.memaryan@gmail.com</span>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
